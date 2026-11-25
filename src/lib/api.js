@@ -1,4 +1,10 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api";
+const configuredApiBase = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, "");
+const API_ORIGIN = configuredApiBase
+  ? configuredApiBase.replace(/\/api$/i, "")
+  : import.meta.env.DEV
+    ? "http://localhost:8000"
+    : "https://dashboard-api-3mqv.onrender.com";
+const API_BASE_URL = `${API_ORIGIN}/api`;
 
 export async function apiRequest(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
